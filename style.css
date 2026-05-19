@@ -1,0 +1,406 @@
+:root {
+    --bg: #02060c;
+    --primary: #00d4ff;
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    opacity: 1;
+    /* Исправлен баг с белым экраном */
+    overflow-x: hidden;
+}
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+}
+
+/* Фикс Навигации */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 0 0 15px 15px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    /* Расстояние между ссылками */
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+/* Главный блок */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 10%;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: var(--primary);
+    color: black;
+    padding: 15px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 30px;
+    transition: 0.3s;
+}
+
+/* Секция тарифов */
+.pricing {
+    padding: 100px 10%;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.price-card {
+    padding: 40px;
+    border-radius: 20px;
+    position: relative;
+    transition: 0.3s;
+}
+
+.price-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+}
+
+.featured {
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: black;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 25px 0;
+    color: var(--primary);
+}
+
+.price span {
+    font-size: 1rem;
+    color: #888;
+}
+
+.price-card ul {
+    list-style: none;
+    margin: 20px 0;
+}
+
+.price-card li {
+    margin: 10px 0;
+    color: #ccc;
+}
+
+.buy-btn {
+    background: var(--primary);
+    border: none;
+    padding: 12px 35px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+/* Окно заказа */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    padding: 40px;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.confirm-btn {
+    background: var(--primary);
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.apps-section {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.apps-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.app-card {
+    width: 380px;
+    padding: 35px;
+    border-radius: 30px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.app-icon {
+    width: 50px;
+    height: 50px;
+    color: white;
+}
+
+.app-version,
+.app-badge {
+    font-size: 0.8rem;
+    color: #888;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.app-badge {
+    background: #00d2ff;
+    color: black;
+    font-weight: bold;
+}
+
+.app-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.app-card p {
+    color: #888;
+    margin-bottom: 30px;
+}
+
+.app-specs {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.spec {
+    display: flex;
+    flex-direction: column;
+}
+
+.spec span {
+    font-size: 0.75rem;
+    color: #555;
+    text-transform: uppercase;
+}
+
+.spec strong {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.app-download-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 18px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.app-download-btn.main-btn {
+    background: white;
+    color: black;
+}
+
+.app-download-btn:hover {
+    transform: scale(1.02);
+    border-color: var(--primary);
+}
+
+/* Главный контейнер по центру */
+.payment-container {
+    max-width: 450px;
+    /* Ограничиваем ширину, чтобы не растягивалось */
+    margin: 80px auto;
+    /* Центрируем на странице */
+    padding: 40px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+/* Карточка с деталями внутри */
+.pay-details {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: left;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pay-details p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+/* Кнопка копирования (аккуратная) */
+.copy-btn-simple {
+    background: var(--primary);
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.copy-btn-simple:hover {
+    filter: brightness(1.2);
+}
+
+/* QR код */
+.qr-code {
+    width: 180px;
+    height: 180px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+/* Ссылки под кнопкой */
+.back-link {
+    display: block;
+    margin-top: 20px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+footer {
+    padding: 40px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 20px 20px 0 0;
+}

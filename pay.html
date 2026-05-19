@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Töleg sahypasy | SecureVPN</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Главный контейнер по центру */
+        .payment-container {
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 40px;
+            text-align: center;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-title {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        /* Карточка с деталями внутри */
+        .pay-details {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pay-details p {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .pay-details strong {
+            color: #fff;
+        }
+
+        /* Кнопка копирования (аккуратная) */
+        .copy-btn-simple {
+            background: var(--primary, #007bff);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .copy-btn-simple:hover {
+            filter: brightness(1.2);
+        }
+
+        /* QR код */
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .instruction-text {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        /* Кнопка Telegram */
+        .telegram-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #2AABEE;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .telegram-btn:hover {
+            background: #2298d6;
+        }
+
+        /* Ссылки под кнопкой */
+        .back-link {
+            display: block;
+            margin-top: 10px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container glass" data-aos="fade-up">
+        <h2 class="payment-title">Balansy doldurmak</h2>
+        <p class="plan-info" style="color: #ccc;">Siziň saýlan tarifiňiz: <span id="selectedPlan"
+                style="color: var(--primary, #007bff); font-weight: bold;">Premium</span> üçin balansy dolduryň</p>
+
+        <!-- Темная карточка с данными -->
+        <div class="pay-details glass">
+            <p><strong>Ugry:</strong> USDT🎁</p>
+            <p style="word-break: break-all;"><strong>Address:</strong> <span id="walletAddr">4938 7554 1787 0829</span>
+            </p>
+            <button class="copy-btn-simple" onclick="copyAddress(this)">Kopiýala</button>
+        </div>
+
+        <!-- QR-код по центру -->
+        <div class="qr-container">
+            <img src="QR.jpeg" alt="QR" class="qr-code">
+        </div>
+
+        <p class="instruction-text">
+            Tölegi geçireniňizden soň, tranzaksiýanyň skrinşotyny aşakdaky düwme arkaly ugradyň.
+        </p>
+
+        <!-- Кнопка автоматизации (вызывает бэкенд и перекидывает в тг) -->
+        <button class="telegram-btn" onclick="sendNotification()" id="notifyBtn">
+            Tölegi habar bermek (Telegram)
+        </button>
+
+        <a href="index.html" class="back-link">← Yza, baş sahypa gaýtmak</a>
+    </div>
+
+    <script>
+        // 1. Показ тарифа
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan');
+        if (plan) {
+            document.getElementById('selectedPlan').innerText = plan;
+        }
+
+        // 2. Копирование адреса
+        function copyAddress(btn) {
+            const address = document.getElementById('walletAddr').innerText;
+            navigator.clipboard.writeText(address).then(() => {
+                const originalText = btn.innerText;
+                const originalBg = btn.style.background;
+
+                btn.innerText = 'Kopiýalandy! ✅';
+                btn.style.background = '#4CAF50';
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = originalBg;
+                }, 2000);
+            });
+        }
+
+        // 3. Автоматизация: Отправка уведомления на FastAPI сервер
+        async function sendNotification() {
+            const btn = document.getElementById('notifyBtn');
+            const planName = document.getElementById('selectedPlan').innerText;
+            let currentUser = localStorage.getItem('vpn_username') || "Belli däl";
+
+            btn.innerText = "Ugradylýar...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/notify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan: planName + ' (Ulanyjy: @' + currentUser + ')', method: 'USDT🎁' })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    btn.innerText = "Üstünlikli ugradyldy! ✅";
+                    btn.style.background = "#4CAF50";
+
+                    // Переходим в ТГ к админу для отправки чека
+                    setTimeout(() => {
+                        window.location.href = "https://t.me/MirzoLoude";
+                    }, 1000);
+                }
+            } catch (error) {
+                btn.innerText = "Serwere birigip bolmady ❌";
+                setTimeout(() => { window.location.href = "https://t.me/MirzoLoude"; }, 1500);
+            }
+        }
+    </script>
+</body>
+
+</html>
